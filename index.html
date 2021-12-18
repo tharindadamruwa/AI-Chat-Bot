@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html>
+  
+  <head>
+   
+    <meta name="viewport" content="width=device-width, initlal-scale=1">
+    
+    <link rel="shortcut icon" type="image/x-icon"  href="favicon.ico"/>
+  
+    <!--install-font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  
+    <!--install-icon-->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+    <style type="text/css" media="all">
+      
+      ::-webkit-scrollbar {
+        width: 0px;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        justify-content:  center;
+        overflow: hidden;
+      }
+      
+      #main {
+        width: 360px;
+        max-width: 540px;
+        height: 100vh;
+        border: solid 1px black;
+      }
+      
+      h2 {
+        text-align: center;
+        font-family: sans-serif;
+        background: black;
+        color: white;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      
+      #msg_area {
+        height: 70%;
+        padding: 0 12px;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+      }
+      
+      #bot {
+        width: 50px;
+        height: 50px;
+        background: url(bot.jpg);
+        background-size: 100%;
+        border-radius: 50%;
+        margin: 10px;
+      }
+      
+      #robot {
+        display: flex;
+        align-items: center;
+      }
+      
+      h3 {
+        font-family: Monospace;
+        font-size: 20px;
+      }
+      
+      #input {
+        height: 7%;
+        display: flex;
+      }
+      
+      #text {
+        height: 40px;
+        width: 300px;
+        border: 2px solid black;
+        border-radius: 5px;
+        margin-left: 10px;
+        font-size: 15px;
+        font-family: Monospace;
+        font-weight: bold;
+        padding: 2px;
+      }
+      
+      #send {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 15px;
+        border: 1px black;
+        background: black;
+        color: white;
+        margin: 1.5px;
+      }
+      
+      #send:active {
+        font-size: 10px;
+      }
+      
+      #send-icon {
+      padding-left: 4px;
+      padding-top: 3px;
+      }
+      
+      .left, .right {
+        font-size: 14px;
+        font-family: Monospace;
+        display: inline-block;
+        width: auto;
+        max-width: 80%;
+        min-width: 20%;
+        padding: 14px;
+        word-wrap: break-word;
+        font-weight: bold;
+        margin: 10px;
+      }
+      
+      .left {
+        background: #d2cdd1;
+        color: black;
+        border-radius: 0px 12px 12px 12px;
+      }
+      
+      .right {
+        float: right;
+        background: black;
+        color: white;
+        border-radius: 12px 12px 0px 12px;
+      }
+      
+      .msgCon1, .msgCon2 {
+        width: 100%;
+        display: inline-block;
+      }
+      
+    </style>
+    
+    <title>AI Chat Bot</title>
+    
+  </head>
+  
+  <body onload="start()">
+    
+    <div id="main">
+      
+      <h2>Chat Bot</h2>
+      
+      <div id="msg_area">
+        
+        <div id="robot">
+        
+          <div id="bot"></div>
+          
+          <h3>AcoBot</h3>
+        
+        </div>
+        
+      </div>
+      
+      <div id="input">
+        
+        <input type="text" placeholder="massage" id="text"/>
+        
+        <button id="send"><ion-icon id="send-icon" name="send"></ion-icon></button>
+        
+      </div>
+      
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js" integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script type="text/javascript" charset="utf-8">
+      
+      function start() {
+        
+        let res_msg = document.createElement("div");
+        res_msg.innerText = "Hello!, I'm Aco AI ChatBot. Created By Tharinda";
+        res_msg.setAttribute("class","left");
+        
+        document.getElementById("msg_area").appendChild(res_msg);
+        
+      }
+      
+      document.getElementById("send").addEventListener("click", async (e) =>
+    
+    {
+      
+      e.preventDefault();
+      
+      var req = document.getElementById("text").value ;
+      if ( req == undefined || req == "") {
+        
+      }
+      else {
+        
+        let res = "";
+        
+        document.getElementById("text").value = "";
+        
+        let msg_req = document.createElement("div");
+        
+        msg_req.innerHTML = req;
+        
+        let Con1 = document.createElement("div");
+        
+        Con1.setAttribute("class","msgCon1");
+        
+        msg_req.innerHTML = req;
+        
+        msg_req.setAttribute("class","right");
+        
+        let massage = document.getElementById("msg_area");
+        
+        massage.appendChild(Con1);
+        
+        Con1.appendChild(msg_req);
+        
+        await axios.get(`https://api.monkedev.com/fun/chat?msg=${req}`).then(data => {
+          res = JSON.stringify(data.data.response)
+        })
+        
+        
+        let msg_res = document.createElement("div");
+        
+        let Con2 = document.createElement("div");
+        
+        Con2.setAttribute("class","msgCon2");
+        
+        msg_res.innerHTML = res;
+        
+        msg_res.setAttribute("class","left");
+        
+        massage.appendChild(Con2);
+        
+        Con2.appendChild(msg_res);
+        
+        
+        function scroll() {
+          
+          var scrollMsg = document.getElementById("msg_area");
+          
+          scrollMsg.scrollTop = scrollMsg.scrollHeight;
+          
+        }
+        
+        scroll();
+        
+      }
+      
+    });
+
+    </script>
+    
+  </body>
+  
+</html>
